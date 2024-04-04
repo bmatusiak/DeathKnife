@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HarmonyLib;
 
-namespace DeathShovel.Patches.Items
+namespace DeathKnife.Patches.Items
 {
     // Patch GrabbableObject because it is the base class for a shovel
     [HarmonyPatch(typeof(GrabbableObject), "Start")]
@@ -15,20 +15,13 @@ namespace DeathShovel.Patches.Items
         public static void Prefix(GrabbableObject __instance)
         {
             // Only run if the instance is a shovel
-            if (__instance.GetType() == typeof(Shovel))
+            if (__instance.GetType() == typeof(KnifeItem))
             {
-                Shovel shovel = __instance as Shovel;
-                shovel.shovelHitForce = Plugin.config.Value;
+                KnifeItem knife = __instance as KnifeItem;
+                knife.knifeHitForce = Plugin.config.Value;
             }
+
         }
     }
 
-    [HarmonyPatch(typeof(Shovel), "SwingShovel")]
-    internal class ShovelPatch
-    {
-        public static void Prefix(Shovel __instance, bool cancel = false)
-        {
-            Plugin.Log.LogInfo(__instance.shovelHitForce);
-        }
-    }
 }
